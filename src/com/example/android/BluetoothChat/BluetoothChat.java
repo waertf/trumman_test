@@ -135,7 +135,7 @@ public class BluetoothChat extends Activity {
         //}
 
         // Mac address
-        String address = "";
+        String address = "84:7A:88:FF:96:68";
         // Secure
         boolean secure = true;
         // Get the BluetoothDevice object

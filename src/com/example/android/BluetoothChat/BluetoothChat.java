@@ -25,20 +25,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
+import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 /**
  * This is the main Activity that displays the current chat session.
@@ -136,6 +126,7 @@ public class BluetoothChat extends Activity {
 
         // Mac address
         String address = "84:7A:88:FF:96:68";
+        address="98:0D:2E:BB:98:E8";
         // Secure
         boolean secure = true;
         // Get the BluetoothDevice object
@@ -143,7 +134,19 @@ public class BluetoothChat extends Activity {
         // Attempt to connect to the device
         mChatService.connect(device, secure);
         //TODO:using thread include loop to send message to mobile
-        sendMessage("");
+        SendThread sendThread = new SendThread(mChatService,this.getApplicationContext());
+        sendThread.start();
+        //sendMessage("");
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
+        startActivity(intent);
+        finish();
+        System.exit(0);
     }
 
     private void setupChat() {
@@ -210,7 +213,7 @@ public class BluetoothChat extends Activity {
      * Sends a message.
      * @param message  A string of text to send.
      */
-    private void sendMessage(String message) {
+    void sendMessage(String message) {
         // Check that we're actually connected before trying anything
         if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
             Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();

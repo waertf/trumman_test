@@ -126,7 +126,7 @@ public class BluetoothChat extends Activity {
 
         // Mac address
         String address = "84:7A:88:FF:96:68";
-        address="98:0D:2E:BB:98:E8";
+        //address="98:0D:2E:BB:98:E8";
         // Secure
         boolean secure = true;
         // Get the BluetoothDevice object
@@ -134,7 +134,7 @@ public class BluetoothChat extends Activity {
         // Attempt to connect to the device
         mChatService.connect(device, secure);
         //TODO:using thread include loop to send message to mobile
-        SendThread sendThread = new SendThread(mChatService,this.getApplicationContext());
+        SendThread sendThread = new SendThread(this,this.getApplicationContext());
         sendThread.start();
         //sendMessage("");
     }
@@ -213,7 +213,7 @@ public class BluetoothChat extends Activity {
      * Sends a message.
      * @param message  A string of text to send.
      */
-    void sendMessage(String message) {
+      void sendMessage(String message) {
         // Check that we're actually connected before trying anything
         if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
             Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();

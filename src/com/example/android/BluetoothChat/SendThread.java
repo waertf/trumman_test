@@ -12,9 +12,9 @@ import java.util.Random;
  * Created by wavegisAAA on 1/21/2015.
  */
 public class SendThread extends Thread {
-    BluetoothChatService myobject;
+    BluetoothChat myobject;
     Context myContext;
-    SendThread(BluetoothChatService object, Context mContext){
+    SendThread(BluetoothChat object, Context mContext){
         myobject=object;
         myContext=mContext;
     }
@@ -25,14 +25,15 @@ public class SendThread extends Thread {
         while (true)
         {
             final String message = speedR.nextInt(1000)+","+batteryR.nextInt(101)+","+totalDistnanceR.nextInt(1000)+";";
-            myobject.write(message.getBytes());
-            Handler handler = new Handler(Looper.getMainLooper());
-            boolean post = handler.post(new Runnable() {
-                public void run() {
-                    // UI code goes here
-                    Toast.makeText(myContext, message, Toast.LENGTH_SHORT).show();
-                }
-            });
+            try {
+                //myobject.write(message.getBytes());
+                myobject.sendMessage(message);
+            }
+            catch (Exception ex)
+            {
+                Log.e(this.toString(),ex.toString());
+            }
+
             //Toast.makeText(myContext,message,Toast.LENGTH_SHORT).show();
             Log.d(this.toString(),message);
             try {
